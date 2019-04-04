@@ -1,0 +1,19 @@
+{
+  "name": "d3-force-nodelink-base",
+  "version": "0.1.0",
+  "description": "Basic class for a D3 force-directed node-link visualization.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/h1-the-swan/d3-force-nodelink-base"
+  },
+  "author": "Jason Portenoy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/h1-the-swan/d3-force-nodelink-base/issues"
+  },
+  "homepage": "https://github.com/h1-the-swan/d3-force-nodelink-base#readme"
+}
