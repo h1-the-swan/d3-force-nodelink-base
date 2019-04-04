@@ -8,7 +8,9 @@ d3.json("data/test_coauthorship_graph_combined_max600.json").then(function(graph
 	var sel = d3.select('#chartDiv');
 	var config = {
 		data: graph,
-		el: sel
+		element: sel,
+		sizeField: 'flow',
+		colorField: 'cl_top'
 	};
 	nodelinkvis = new d3ForceNodeLink(config);
 

@@ -4,8 +4,7 @@
 // import jQuery from 'jquery';
 // const $ = jQuery;
 
-// import {select, selectAll, event as d3event} from 'd3-selection';
-import {select, selectAll} from 'd3-selection';
+import {select, selectAll, event as d3event} from 'd3-selection';
 import {scaleOrdinal, scaleLinear} from 'd3-scale';
 import {schemeCategory10} from 'd3-scale-chromatic';
 import {forceManyBody, forceSimulation, forceLink, forceCenter} from 'd3-force';
@@ -19,24 +18,26 @@ const d3 = {select, selectAll, scaleOrdinal, scaleLinear, schemeCategory10, forc
 class d3ForceNodeLink {
 	constructor(opts = {}) {
 		const defaults = {
-			el: null,
+			element: null,
 			data: null,
 			width: 960,
 			color: d3.scaleOrdinal(d3.schemeCategory10),
 			forceStrength: -2,
+			sizeField: 'flow',  // field with continuous variable to use for size
+			colorField: 'cl_top',  // categorical field to use for colors
 		};
 		Object.assign(this, defaults, opts);  // opts will overwrite defaults
 		this._data = this.data;
 		this.data = this.updateData;
-		if (typeof this.height === 'undefined') {
+		if (typeof this.height === 'undefined' || this.height === null) {
 			this.height = .625 * this.width;
 		}
 		this.manyBody = d3.forceManyBody()
 							.strength(this.forceStrength);
 		this.init = false;
 		console.log(this._data);
-		if (this.el !== null && this._data !== null) {
-			this.draw(this.el);
+		if (this.element !== null && this._data !== null) {
+			this.draw(this.element);
 			this.init = true;
 		}
 	}
@@ -58,7 +59,7 @@ class d3ForceNodeLink {
 		if (!arguments.length) return this._data;
 		this._data = value;
 		if (this.init === false) {
-			this.draw(this.el);
+			this.draw(this.element);
 			this.init = true;
 		} else {
 			// this.updateData();
@@ -78,6 +79,8 @@ class d3ForceNodeLink {
 		var manyBody = this.manyBody;
 		var color = this.color;
 		var getLinkId = this.getLinkId;
+		var sizeField = this.sizeField;
+		var colorField = this.colorField;
 		selection.each(function() {
 			var selItem = this;
 
@@ -107,8 +110,8 @@ class d3ForceNodeLink {
 				var defaultColor = color(0);
 
 				sizeScale.domain(d3.extent(graph.nodes, function(d) {
-					if (d.hasOwnProperty('flow')) {
-						return d.flow;
+					if (d.hasOwnProperty(sizeField)) {
+						return d[sizeField];
 					} else {
 						return [5,5]
 					}
@@ -134,14 +137,14 @@ class d3ForceNodeLink {
 					.attr("cx", function(d) { return d.x = (width/2) + d.x; })
 					.attr("cy", function(d) { return d.y = (height/2) + d.y; })
 					.each(function(d) {
-						if (d.hasOwnProperty('flow')) {
-							d.radius = sizeScale(d.flow);
+						if (d.hasOwnProperty(sizeField)) {
+							d.radius = sizeScale(d[sizeField]);
 						} else {
 							d.radius = 5;
 						}
 
-						if (d.hasOwnProperty("cl_top")) {
-							d.color = color(d.cl_top);
+						if (d.hasOwnProperty(colorField)) {
+							d.color = color(d[colorField]);
 						} else {
 							d.color = defaultColor;
 						}
@@ -226,7 +229,6 @@ class d3ForceNodeLink {
 				// .force("link", d3.forceLink())
 				.force("charge", manyBody)
 				.force("center", d3.forceCenter(width / 2, height / 2));
-		console.log('ddd');
 
 		  simulation
 			  .nodes(graph.nodes)
