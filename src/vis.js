@@ -4,7 +4,8 @@
 // import jQuery from 'jquery';
 // const $ = jQuery;
 
-import {select, selectAll, event as d3event} from 'd3-selection';
+// import {select, selectAll, event as d3event} from 'd3-selection';
+import {select, selectAll} from 'd3-selection';
 import {scaleOrdinal, scaleLinear} from 'd3-scale';
 import {schemeCategory10} from 'd3-scale-chromatic';
 import {forceManyBody, forceSimulation, forceLink, forceCenter} from 'd3-force';
@@ -225,6 +226,7 @@ class d3ForceNodeLink {
 				// .force("link", d3.forceLink())
 				.force("charge", manyBody)
 				.force("center", d3.forceCenter(width / 2, height / 2));
+		console.log('ddd');
 
 		  simulation
 			  .nodes(graph.nodes)

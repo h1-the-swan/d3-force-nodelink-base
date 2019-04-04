@@ -49,26 +49,29 @@ const config = {
     ]
   },
   resolve: {
+	mainFields: ['module', 'main'],
     modules: [path.resolve('./node_modules'), path.resolve('./src')],
     extensions: ['.json', '.js']
   },
   // target: 'node', // in order to ignore built-in modules like path, fs, etc.
   target: 'web',
   externals: [
-	  {
-		  'tippy.js': {
-			  commonjs: 'tippy.js',
-			  commonjs2: 'tippy.js',
-			  amd: 'tippy.js',
-			  root: 'tippy'
-		  }
-	  },
-	  // {tippy: 'tippy.js'},
-	  // 'tippy.js',
-	  'd3',
-	  {jquery: 'jQuery'},
-	  {popper: 'popper.js'}
+	  {'d3-selection': externalItem('d3-selection', 'd3')},
+	  {'d3-scale': externalItem('d3-scale', 'd3')},
+	  {'d3-scale-chromatic': externalItem('d3-scale-chromatic', 'd3')},
+	  {'d3-force': externalItem('d3-force', 'd3')},
+	  {'d3-array': externalItem('d3-array', 'd3')},
+	  {'d3-drag': externalItem('d3-drag', 'd3')}
   ]
 };
+
+function externalItem(name, rootName) {
+	return {
+			"commonjs": name,
+			"commonjs2": name,
+			"amd": name,
+			"root": rootName
+		};
+}
 
 module.exports = config;

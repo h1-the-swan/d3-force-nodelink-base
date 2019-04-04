@@ -6,7 +6,10 @@ var nodelinkvis;
 // d3.json("data/test_coauthorship_graph.json").then(function(graph) {
 d3.json("data/test_coauthorship_graph_combined_max600.json").then(function(graph) {
 	var sel = d3.select('#chartDiv');
-	console.log(sel);
-	nodelinkvis = new d3ForceNodeLink({data: graph, el: sel});
+	var config = {
+		data: graph,
+		el: sel
+	};
+	nodelinkvis = new d3ForceNodeLink(config);
 
 });
