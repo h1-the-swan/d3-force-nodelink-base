@@ -11,8 +11,21 @@ import {forceManyBody, forceSimulation, forceLink, forceCenter} from 'd3-force';
 import {extent} from 'd3-array';
 import {drag} from 'd3-drag';
 
-const d3 = {select, selectAll, scaleOrdinal, scaleLinear, schemeCategory10, forceManyBody, forceSimulation, forceLink, forceCenter, extent, drag}
-// can't figure out how to use d3.event, so replace it with d3event instead
+const d3 = {
+	select, 
+	selectAll, 
+	get event() {return d3event;}, 
+	scaleOrdinal, 
+	scaleLinear, 
+	schemeCategory10, 
+	forceManyBody, 
+	forceSimulation, 
+	forceLink, 
+	forceCenter, 
+	extent, 
+	drag
+}
+// d3.event is a live binding, so need to use getter
 
 
 class d3ForceNodeLink {
@@ -88,18 +101,20 @@ class d3ForceNodeLink {
 			console.log(graph);
 
 			function dragstarted(d) {
-				if (!d3event.active) simulation.alphaTarget(0.3).restart();
+				if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+				console.log(d3event);
+				console.log(d3.event);
 				d.fx = d.x;
 				d.fy = d.y;
 			}
 
 			function dragged(d) {
-				d.fx = d3event.x;
-				d.fy = d3event.y;
+				d.fx = d3.event.x;
+				d.fy = d3.event.y;
 			}
 
 			function dragended(d) {
-				if (!d3event.active) simulation.alphaTarget(0);
+				if (!d3.event.active) simulation.alphaTarget(0);
 				d.fx = null;
 				d.fy = null;
 			}
